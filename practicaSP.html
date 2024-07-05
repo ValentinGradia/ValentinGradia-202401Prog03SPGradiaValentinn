@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Practica</title>
+</head>
+<body id="body">
+    <style>
+                
+        .loader {
+        position: relative;
+        margin: 0 auto;
+        width: 100px;
+        &:before {
+            content: '';
+            display: block;
+            padding-top: 100%;
+        }
+        }
+
+        .circular {
+        animation: rotate 2s linear infinite;
+        height: 100%;
+        transform-origin: center center;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        }
+
+        .path {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+        animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+        stroke-linecap: round;
+        }
+
+        @keyframes rotate {
+        100% {
+            transform: rotate(360deg);
+        }
+        }
+
+        @keyframes dash {
+        0% {
+            stroke-dasharray: 1, 200;
+            stroke-dashoffset: 0;
+        }
+        50% {
+            stroke-dasharray: 89, 200;
+            stroke-dashoffset: -35px;
+        }
+        100% {
+            stroke-dasharray: 89, 200;
+            stroke-dashoffset: -124px;
+        }
+        }
+
+        @keyframes color {
+            100%,
+            0% {
+                stroke: #d62d20;
+            }
+            40% {
+                stroke: #0057e7;
+            }
+            66% {
+                stroke: #008744;
+            }
+            80%,
+            90% {
+                stroke: #ffa700;
+            }
+        }
+        body {
+        background-color: #eee;
+        }
+        .showbox {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 5%;
+        }
+
+        *{
+            margin: 0;
+            box-sizing: border-box;
+            text-decoration: none;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        a{
+            color: black;
+        }
+
+        .form-personas{
+            padding: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 70vh;
+            position: relative;
+        }
+
+        .personas{
+            padding: 5px;
+            position: absolute;
+            border: 1px solid black;
+            border-radius: 1%;
+            background-color: antiquewhite;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start; 
+            width: 50%;
+        }
+
+        .titulo-datos{
+            display: flex;
+            padding: 30px 0 30px ;
+        }
+
+        #h3-datos{
+            font-size: 2em;
+            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            color: rgb(53, 48, 48);
+        }
+
+        .filtro-edad{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            width: 80%;
+            flex-wrap: wrap;
+            align-content: baseline;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .boton-calcular{
+            background-color: rgb(240, 161, 58);
+            height: 25px;
+            border: 1px solid black;
+            border-radius: 1%;
+            display: flex;
+            justify-content:center;
+            align-items: center;
+            width: 5em;
+        }
+
+
+        .boton-calcular:hover, .boton-agregar-abm:hover, .boton-cancelar-abm:hover, .boton-agregar-datos:hover, .boton-editar-abm:hover
+        ,.boton-eliminar-abm:hover{
+            background-color: rgb(197, 124, 29);
+        }
+
+        .checkboxs-columnas{
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            justify-content: center;
+            padding-bottom: 20px;
+        }
+
+        .checkboxs{
+            display: flex;
+            flex-direction: row;
+            column-gap: 10px;
+            padding-left: 10px;
+        }
+
+        .miTabla{
+            padding: 5px;
+            display: flex;
+            position: relative;
+            width: 100%;
+            justify-content: center;
+            height: auto;
+        }
+        
+        .boton-agregar-datos{
+            display: flex;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            height: 25px;
+            border-radius: 1%;
+            display: flex;
+            justify-content:center;
+            align-items: center;
+            width: 5em;
+            background-color: rgb(240, 161, 58);
+            border: 1px solid black;
+        }
+
+        #tabla{
+            border-collapse: collapse;
+            overflow-y: sc;
+        }
+
+        #agregarDatos, #promedio, #agregarAbm, #cancelarAbm, #editarAbm{
+            color: black;
+        }
+
+        .abm{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            height: 40vh;
+            margin: 0 auto;
+            width: 400px;
+            display: none;
+        }
+
+        #form-abm{
+            width: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid black;
+            border-radius: 1%;
+            background-color: antiquewhite;
+            display: flex;
+            justify-content: center;
+        }
+
+        #form-abm div{
+            margin-top :10px;
+        }
+
+        .botones{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            width: 70%;
+            margin-bottom: 15px;
+        }
+
+        .boton-agregar-abm, .boton-cancelar-abm, .boton-editar-abm, .boton-eliminar-abm
+        {
+            background-color: rgb(240, 161, 58);
+            height: 25px;
+            border: 1px solid black;
+            border-radius: 1%;
+            display: flex;
+            flex-direction: row;
+            justify-content:center;
+            align-items: center;
+            width: 5em;
+        }
+
+        .filtro-tipo{
+            display: flex;
+            flex-direction: row;
+            width: 25%;
+            justify-content: space-evenly;
+            margin-bottom: 20px;
+        }
+
+        
+
+        
+    </style>
+
+    <div class="showbox" id="animacion" style="display: none;">
+        <div class="loader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+        </svg>
+        </div>
+    </div>
+
+    <div class="abm" id="abm">
+        <form action="" id="form-abm">
+            <div class="titulo-abm">
+                <h3>Formulario ABM</h3>
+            </div>
+            <div class="div-id" id="div-id" style="display: none;">
+                <label for="id">Id:</label>
+                <input type="text" name="id" id="id" readonly>
+            </div>
+            <div class="div-apellido">
+                <label for="apellido">Apellido: </label>
+                <input type="text" name="apellido" id="apellido" >
+            </div>
+            <div class="div-nombre">
+                <label for="nombre">Nombre: </label>
+                <input type="text" name="nombre" id="nombre">
+            </div>
+            <div class="div-fechaDeNacimiento">      
+                <label for="fechaDeNacimiento">Fecha de Nacimiento: </label>
+                <input type="text" name="fechaDeNacimiento" id="fechaDeNacimiento" placeholder="">
+            </div>
+
+            <div class="div-tipo">
+                <label for="tipo">Tipo:</label>
+                Ciudadano
+                <input type="radio" name="tipo" id="ciudadano" value="ciudadano" onclick="VerificarPersona()"> 
+                Extranjero
+                <input type="radio" name="tipo" id="extranjero" value="extranjero" onclick="VerificarPersona()">
+            </div>
+
+            <div class="div-dni">
+                <label for="labelDni" style="display: none;" id="labelDni"></label>
+                <input type="text" name="labelDni" id="inputDni" style="display: none;">
+            </div>
+            <div class="div-paisOrigen">
+                <label for="labelPaisOrigen" style="display: none;" id="labelPaisOrigen"></label>
+                <input type="text" name="labelPaisOrigen" id="inputPaisOrigen" style="display: none;">
+            </div>
+
+            <div class="botones">
+                <div class="boton-agregar-abm" id="agregar-abm">
+                    <a href="#" id="agregarAbm" onclick="Agregar()">Agregar</a>
+                </div>
+
+                <div class="boton-editar-abm" id="editar-abm" style="display: none;">
+                    <a href="#" id="editarAbm" onclick="Editar()">Editar</a>
+                </div>
+    
+                <div class="boton-cancelar-abm">
+                    <a href="#" id="cancelarAbm" onclick="Cancelar()" value="Cancelar">Cancelar</a>
+                </div>
+
+                <div class="boton-eliminar-abm" id="eliminar-abm" style="display: none;">
+                    <a href="#" id="eliminarAbm" onclick="Eliminar()" value="Eliminar">Eliminar</a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="form-personas" id="form-personas">
+        <form class="personas" id="personas">
+            <div class="titulo-datos">
+                <h3 id="h3-datos">Form Datos</h3>
+            </div>
+
+            <div class="filtro-tipo">
+                <div class="label-filtro-tipo">
+                    <label for="filtros">Filtrar por: </label> 
+                </div>
+                <div class="select-opciones">
+                    <select id="opciones" onchange="verificarSelect(this)">
+                        <option value="1">Todos</option>
+                        <option value="2" >Clientes</option>
+                        <option value="3" >Empleados</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filtro-edad">
+                <div class="edad-labelInput">
+                    <label for="promedio" id="labelPromedio">Calcular Edad Promedio:</label>
+                    <input type="text" name="promedio" id="promedioInput" readonly>
+                </div>
+                <div class="boton-calcular">
+                    <a href="#" id="promedio" onclick="calcularEdadPromedio()">Calcular</a>
+                </div>
+            </div>
+            <div class="checkboxs-columnas">
+                <div class="titulo-columnas">
+                    <label for="columnas">Mostrar columnas: </label>
+                </div>
+                <div class="checkboxs" name="misCheckboxs">
+                    <div class="checkbox-id">
+
+                        <input type="checkbox" name="ID" id="id-checkbox" value="0" onclick="verificarCheckboxs(this)" checked>ID
+                    </div>
+                    <div class="checkbox-nombre">
+
+                        <input type="checkbox" name="Nombre" id="nombre-checkbox" value="1"  onclick="verificarCheckboxs(this)" checked>Nombre
+                    </div>
+                    <div class="chechbox-apellido">
+
+                        <input type="checkbox" name="Apellido" id="apellido-checkbox" value="2" onclick="verificarCheckboxs(this)" checked>Apellido
+                    </div>
+                    <div class="checkbox-fechaDeNacimiento">
+
+                        <input type="checkbox" name="FechaDeNacimiento" id="fechaDeNacimiento-checkbox" value="3"  onclick="verificarCheckboxs(this)" checked>Nacimiento
+                    </div>
+                    <div class="checkbox-dni">
+
+                        <input type="checkbox" name="Dni" id="dni-checkbox" value="4"   onclick="verificarCheckboxs(this)" checked>Dni
+                    </div>
+                    <div class="checkbox-paisOrigen">
+
+                        <input type="checkbox" name="PaisOrigen" id="paisOrigen-checkbox" value="5"   onclick="verificarCheckboxs(this)" checked>Pais Origen
+                    </div>
+                </div>
+            </div>
+
+            <div class="boton-agregar-datos">
+                <a href="#" id="agregarDatos" type="button" onclick="mostrarAbm() ">Agregar</a>
+            </div>
+
+            <div class="miTabla" id="laTabla">
+                <table border="1" id="tabla">
+                    <tr id="encabezado">
+                        <th><a href="#" onclick="ordenarTabla(this,0)" id="numero">ID</a></th>
+                        <th><a href="#" onclick="ordenarTabla(this,1)" id="texto">Nombre</a></th>
+                        <th><a href="#" onclick="ordenarTabla(this,2)" id="texto">Apellido</a></th>
+                        <th><a href="#" onclick="ordenarTabla(this,3)" id="fecha">FechaDeNacimiento</a></th>
+                        <th><a href="#" onclick="ordenarTabla(this,4)" id="numero">Dni</a></th>
+                        <th><a href="#" onclick="ordenarTabla(this,5)" id="texto">Pais origen</a></th>
+                        <th>Tipo</th>
+                        <th>Modificar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </table>
+
+            </div>
+
+        </form>
+    </div>
+    
+</body>
+<script types="text/javascript">
+
+    const form = document.getElementById("form-abm");
+    const formDatos = document.getElementById("form-personas")
+
+    class Persona
+    {
+        static contadorId = 0;
+        constructor(nombre,apellido, fechaDeNacimiento)
+        {
+            Persona.contadorId ++;
+            this.id = Persona.contadorId;
+            this.nombre = nombre;
+            this.apellido = apellido;
+            this.fechaDeNacimiento = fechaDeNacimiento;
+        }
+
+
+        toString()
+        {
+            return `Nombre: ${this.nombre}, Apellido: ${this.apellido}, Id: ${this.id}, Fecha de Nacimiento: ${this.fechaDeNacimiento}`;
+        }
+
+        toJson()
+        {
+
+
+            var person =    
+            {
+                nombre: this.nombre,
+                apellido: this.apellido,
+                fechaNacimiento: this.fechaDeNacimiento
+            }
+
+            return person;
+        }
+
+    }
+
+    class Ciudadano extends Persona
+    {
+        constructor(nombre,apellido,fechaDeNacimiento,dni)
+        {
+            super(nombre,apellido,fechaDeNacimiento);
+            this.dni = dni;
+        }
+
+        toString()
+        {
+            return super.toString() + `Dni: ${this.dni}`; 
+        }
+
+        toJson()
+        {
+
+            var person = 
+            {
+                nombre: this.nombre,
+                apellido: this.apellido,
+                fechaNacimiento: this.fechaDeNacimiento,
+                dni: this.dni
+            }
+
+            return person;
+        }
+    }
+
+    class Extranjero extends Persona
+    {
+        constructor(nombre,apellido,fechaDeNacimiento,paisOrigen)
+        {
+            super(nombre,apellido,fechaDeNacimiento);
+            this.paisOrigen = paisOrigen;
+
+        }
+
+        toString()
+        {
+            return super.toString() + `Pais origen: ${this.paisOrigen}`; 
+        }
+
+        toJson()
+        {
+
+            var person = 
+            {
+                nombre: this.nombre,
+                apellido: this.apellido,
+                fechaNacimiento: this.fechaDeNacimiento,
+                paisOrigen : this.paisOrigen
+            }
+
+            return person;
+        }
+    }
+
+//     '[{"id":1,"apellido":"Serrano","nombre":"Horacio","fechaNacimiento":19840103,"dni":45876942},{"id":2,"apellido":"Cas
+// as","nombre":"Julian","fechaNacimiento":19990723,"dni":98536214},{"id":3,"apellido":"Galeano","nombre":"Julieta","f
+// echaNacimiento":20081103,"dni":74859612},{"id":4,"apellido":"Molina","nombre":"Juana","fechaNacimiento":196812
+// 01,"paisOrigen":"Paraguay"},{"id":5,"apellido":"Barrichello","nombre":"Rubens","fechaNacimiento":19720523,"paisOrig
+// en":"Brazil"},{"id":666,"apellido":"Hkkinen","nombre":"Mika","fechaNacimiento":19680928,"paisOrigen":"Finlandia"}]'
+
+
+
+    var personasTotal = new Array();
+
+    // personasTotal.push(ej1);
+    // personasTotal.push(ej2);
+    // personasTotal.push(ej3);
+    // personasTotal.push(ej4);
+    // personasTotal.push(ej5);
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Esta función se ejecutará cuando el HTML haya cargado completamente
+        cargarPersonas();
+    });
+
+    function cargarPersonas()
+    {
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function(){
+            if (xhttp.readyState == 4 && xhttp.status == 200) 
+            {
+                ElementoId("animacion").style.display = "none";
+                ElementoId("form-personas").style.display = "flex";
+
+                let personas = JSON.parse(xhttp.response);
+                let arrayPersonas = Array.from(personas);
+                agregarPersonas(arrayPersonas);
+            }
+            else if(xhttp.readyState == 1 )
+            {
+                ElementoId("animacion").style.display = "block";
+                ElementoId("form-personas").style.display = "none";
+            }
+        };
+
+        xhttp.open("GET", "https://examenesutn.vercel.app/api/PersonaCiudadanoExtranjero", true);
+        xhttp.send();
+    }
+
+
+    function modificarPersona(miPersona)
+    {
+        const response = fetch("http://localhost/PersonasEmpleadosClientes.php", {
+                    method: 'PUT', 
+                    mode: 'cors', 
+                    headers: {
+                    'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        nombre : miPersona.nombre,
+                        apellido : miPersona.apellido,
+                        fechaDeNacimiento : miPersona.fechaDeNacimiento,
+                        dni : miPersona instanceof Ciudadano ? miPersona.dni : undefined,
+                        paisOrigen : miPersona instanceof Extranjero ? miPersona.paisOrigen : undefined
+                    })
+                })
+                .then(response=>{ 
+                    if (!response.ok) {
+                        
+                        throw new Error(`Error en la solicitud`);
+                    }
+                    return response;
+                }) 
+                .then(response=>{
+                    console.log(response);
+                })
+                .catch(error => {
+                    console.log(error.message);
+                })
+                
+    }
+
+    function agregarPersonas(personas)
+    {
+
+        personas.forEach(persona => 
+        {
+            console.log(persona);
+            //para que el id cuando lo instancie no se autoincremente, lo guardamos
+            id = persona["id"];
+            if(persona["dni"] === undefined)
+            {
+                persona = new Extranjero(persona["nombre"],persona["apellido"],persona["fechaNacimiento"]
+                ,persona["paisOrigen"]);
+            }
+            else
+            {
+                persona = new Ciudadano(persona["nombre"],persona["apellido"],persona["fechaNacimiento"],
+                    persona["dni"]);
+            }
+
+            //y luego lo seteamos
+            persona.id = id;
+
+            personasTotal.push(persona);
+
+            agregarDatosEnTabla(persona);
+        });
+    }
+
+
+    function crearPersona(tipo)
+    {
+        var persona;
+
+        if(tipo == "ciudadano")
+        {
+            persona = new Ciudadano(
+                ElementoId("apellido").value,
+                ElementoId("nombre").value,
+                ElementoId("fechaDeNacimiento").value,
+                ElementoId("inputDni").value,
+            ) 
+        }
+        else
+        {
+            persona = new Extranjero(
+                ElementoId("apellido").value,
+                ElementoId("nombre").value,
+                ElementoId("fechaDeNacimiento").value,
+                ElementoId("inputPaisOrigen").value,
+            ) 
+        }
+
+        return persona;
+
+    }
+
+    async function Agregar()
+    {
+
+        try
+        {
+            var tipo = document.querySelector('input[name="tipo"]:checked').value;
+        }
+        catch(error){}
+
+
+        var iconos = document.querySelectorAll('i');
+
+        iconos.forEach(function(icono) {
+            icono.remove();
+        });
+
+
+        if(!validarInputs())
+        {
+            return;
+        }
+        else
+        {
+            ElementoQuery('div[class="abm"]').style.display = "none";
+
+            let miPersona = crearPersona(tipo);
+
+            jsonPersona = miPersona.toJson();
+
+            ElementoId("animacion").style.display = "block";
+
+
+            const response = await  fetch("https://examenesutn.vercel.app/api/PersonaCiudadanoExtranjero", {
+                    method: 'POST', 
+                    mode: 'cors', 
+                    headers: {
+                    'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        nombre : miPersona.nombre,
+                        apellido : miPersona.apellido,
+                        fechaDeNacimiento : miPersona.fechaDeNacimiento,
+                        dni : miPersona instanceof Ciudadano ? miPersona.dni : undefined,
+                        paisOrigen : miPersona instanceof Extranjero ? miPersona.paisOrigen : undefined
+                    })
+                })
+                .then(response=>{ 
+                    if (!response.ok) {
+                        ElementoId("animacion").style.display = "none";
+                        ElementoQuery('div[class="abm"]').style.display = "none";
+                        formDatos.style.display = "flex";
+                        
+                        throw new Error(`Error en la solicitud`);
+                    }
+                    return response.json();
+                }) 
+                .then(response=>{
+
+                    ElementoId("animacion").style.display = "none";
+                    miPersona.id = response.id;
+                    if(miPersona == false)
+                    {
+                        //si el id existe el formulario se sigue mostrando
+                        ElementoQuery('div[class="abm"]').style.display = "flex";
+                        //return;
+                    }
+                    else
+                    {
+                        personasTotal.push(miPersona);
+
+                        agregarDatosEnTabla(miPersona);
+
+                        let select = ElementoId("opciones");
+
+                        let indiceSeleccionado = select.selectedIndex;
+
+                        let valorSeleccionado = select.options[indiceSeleccionado].value;
+
+                        mostrarTipo(); //previamente quiza agrego una persona  y que solose filtren por determinado tipo
+
+                        formDatos.style.display = "flex";
+
+                        reset();
+                    }
+
+                }) 
+                .catch(error=>{
+                    alert(error.message);
+                })
+
+
+        }
+
+    }
+
+
+    function mostrarTipo()
+    {
+        let select = ElementoId("opciones");
+
+        let indiceSeleccionado = select.selectedIndex;
+
+        let valorSeleccionado = select.options[indiceSeleccionado].value;
+
+        if(valorSeleccionado == "2")
+        {
+            ocultarEextranjeros();
+        }
+        else if( valorSeleccionado == "3")
+        {
+            ocultarCiudadanos();
+        }
+    }
+
+    function Cancelar()
+    {
+        ElementoQuery('div[class="abm"]').style.display = "none";
+
+        formDatos.style.display = "flex";
+
+        reset();
+    }
+
+    function EliminarPersona(persona)
+    {
+        var idAEliminar = persona.id;
+
+        personasTotal = personasTotal.filter(persona => persona.id != idAEliminar);
+
+    }
+
+    function EliminarPersonaApi(persona)
+    {
+            return fetch("http://localhost/PersonasEmpleadosClientes.php", {
+                        method: 'DELETE', 
+                        mode: 'cors', 
+                        headers: {
+                        'Content-Type': 'application/json'},
+                        body: JSON.stringify(persona)
+                    })
+                    .then(response=>{ 
+                        if (!response.ok) {
+    
+                            if(response.status === 400)
+                            {
+                                throw new Error('No puedes eliminar a esta persona');
+                            }
+                            else
+                            {
+                                throw new Error(`Error en la solicitud`);
+                            }
+                        }
+                        return response;
+                    }) 
+                    .catch(error => {
+                        alert(error.message);
+                        return error;
+                    })
+    }
+
+    async function Eliminar(id)
+    {
+        var personaAEliminar = personasTotal.find(persona => persona.id == id);
+
+        ElementoId("animacion").style.display = "block";
+        ElementoId("form-personas").style.display = "none";
+
+        var response = await EliminarPersonaApi(personaAEliminar);
+
+        if(!(response instanceof Error))
+        {
+            let tabla = document.getElementById("tabla");
+    
+            var filas = tabla.rows;
+    
+            for(let i = 0; i < filas.length; i++)
+            {
+                if(i !== 0)
+                {
+                    var fila = filas[i];
+    
+                    if(fila.cells[0].innerHTML == id)
+                    {
+                        tabla.deleteRow(i);
+                    }
+                }
+            }
+    
+            EliminarPersona(personaAEliminar);
+    
+        }
+
+
+        ElementoId("form-personas").style.display = "flex";
+        ElementoId("animacion").style.display = "none";
+
+    }
+
+    function validarInputs()
+    {
+        var flag = true;
+
+        var inputs = ["nombre","apellido","fechaDeNacimiento","inputDni","inputPaisOrigen",];
+
+
+        inputs.forEach(input => {
+            if(ElementoId(input).style.display !== "none")
+            {
+                if(!ElementoId(input).value == "")
+                {
+                    if(input == "nombre" || input == "apellido" || input == "inputPaisOrigen")
+                    {
+                        if(!isNaN(ElementoId(input).value))
+                        {
+
+                            generarIcono(input)
+                        }
+                    }
+                    else
+                    {
+                        if(isNaN(ElementoId(input).value))
+                        {
+                            generarIcono(input)
+                        }
+                    }
+                }
+                else
+                {
+                    generarIcono(input)
+                }
+                
+            }
+            
+        });
+
+
+        function generarIcono(input)
+        {
+            flag = false;
+            var icono = document.createElement("i");
+            icono.classList.add("fa-solid", "fa-xmark");
+            icono.style.color = "red";
+                        
+            ElementoId(input).parentNode.insertBefore(icono, ElementoId(input).nextSibling);
+        }
+
+        return flag;
+    }
+
+
+    function agregarDatosEnTabla(persona)
+    {
+        var tabla = ElementoId("tabla");
+
+        let etiquetasTd = new Array();
+
+        var tr = CrearElemento("tr");
+
+        let tdId = CrearElemento("td");
+        let tdNombre = CrearElemento("td");
+        let tdApellido = CrearElemento("td");
+        let tdFechaDeNacimiento = CrearElemento("td");
+
+        tdId.appendChild(CrearTexto(persona.id))
+        tdNombre.appendChild(CrearTexto(persona.nombre))
+        tdApellido.appendChild(CrearTexto(persona.apellido))
+        tdFechaDeNacimiento.appendChild(CrearTexto(persona.fechaDeNacimiento))
+
+        etiquetasTd.push(tdId);etiquetasTd.push(tdNombre);etiquetasTd.push(tdApellido);
+        etiquetasTd.push(tdFechaDeNacimiento);
+
+        var tdDni = CrearElemento("td");
+        var tdPaisOrigen = CrearElemento("td");
+        var tdTipo = CrearElemento("td");
+        var tdModificar = CrearElemento("td");
+        var tdEliminar = CrearElemento("td");
+
+        if(persona instanceof Ciudadano)
+        {
+
+
+            tdDni.appendChild(CrearTexto(persona.dni));
+            tdPaisOrigen.appendChild(CrearTexto("--"));
+            tdTipo.appendChild(CrearTexto("Ciudadano"));
+
+            etiquetasTd.push(tdDni);etiquetasTd.push(tdPaisOrigen);
+        }
+        else
+        {
+            tdPaisOrigen.appendChild(CrearTexto(persona.paisOrigen));
+            tdDni.appendChild(CrearTexto("--"));
+            tdTipo.appendChild(CrearTexto("Extranjero"))
+
+            etiquetasTd.push(tdDni);etiquetasTd.push(tdPaisOrigen);
+        }
+
+        var botonModificar = CrearElemento("button");
+        botonModificar.textContent = "Modificar";
+        tdModificar.appendChild(botonModificar);
+        botonModificar.onclick = function() {
+            editarPersona(tdId); 
+        };
+
+        var botonEliminar = CrearElemento("button");
+        botonEliminar.textContent = "Eliminar";
+        botonEliminar.value = persona;
+        tdEliminar.appendChild(botonEliminar);
+        botonEliminar.onclick = function(){
+            Eliminar(persona.id);
+        }
+        
+        var divCheckboxs = ElementoQuery('div[name="misCheckboxs"]')
+
+        var divCheckboxsChildren = divCheckboxs.children;
+
+        let inputs = new Array();
+
+        for( let i = 0; i < divCheckboxsChildren.length; i++)
+        {
+            let divCheckbox = divCheckboxsChildren[i];
+
+            let input = divCheckbox.querySelector("input");
+
+            inputs.push(input);
+
+        }
+
+
+
+        //En el caso de que deschequee un checbkox antes de angregar una persona
+        var posicionesInputsDeschecked = new Array();
+        
+        for(let j = 0; j < inputs.length; j++){
+            let input = inputs[j];
+
+            if(!input.checked)
+            {
+                //Guardo los valores/posiciones de las checkbox que no estan seleccionadas
+                posicionesInputsDeschecked.push(j);
+            }
+        }
+
+
+        etiquetasTd.forEach(td => {
+            tr.appendChild(td);
+        });
+
+        tr.appendChild(tdTipo);
+        tr.appendChild(tdModificar);
+        tr.appendChild(tdEliminar);
+
+
+        tabla.appendChild(tr);
+
+        let filas = tabla.rows;
+
+        for(let k = 0; k < filas.length; k++)
+        {
+            var fila = filas[k]
+            if(k !== 0)
+            {
+                for(let i = 0; i < fila.cells.length; i++)
+                {
+                    let celda = fila.cells[i];
+
+                    //Como los valores de los checkboxs indican su posicion me fijo cuales son las celdas de las filas  
+                    //que no tienen que mostrarse
+                    
+                    //Posiciones de las celdas en las filas = valores de los checkboxs
+                    if(posicionesInputsDeschecked.includes(i))
+                    {
+                        celda.style.display = "none";
+                    }
+                        
+                }
+            }
+        }
+
+    }
+
+
+    function mostrarAbm()
+    {
+        ElementoId("promedioInput").value = "";
+
+        ElementoQuery('div[class="abm"]').style.display = "flex";
+
+        formDatos.style.display = "none";
+
+        ElementoId("agregar-abm").style.display = "flex";
+
+        ElementoId("editar-abm").style.display = "none";  
+        
+
+        return false;
+    }
+
+    function reset()
+    {
+        ElementoId("nombre").value = "";ElementoId("apellido").value = "";
+        ElementoId("fechaDeNacimiento").value = "";ElementoId("inputDni").value = "";
+        ElementoId("inputPaisOrigen").value = "";ElementoId("id");
+
+        ElementoId("div-id").style.display = "none";
+
+
+        ElementoId("labelDni").style.display = "none";
+        ElementoId("inputDni").style.display = "none";
+        ElementoId("labelPaisOrigen").style.display = "none";
+        ElementoId("inputPaisOrigen").style.display = "none";
+        let radio = ElementoQuery('input[name="tipo"]:checked');
+
+        try
+        {
+            radio.checked = false
+        }
+        catch(error)
+        {
+            
+        }
+    }
+
+    function ocultarCiudadanos()
+    {
+        let tabla = ElementoId("tabla");
+
+        let filas = tabla.rows;
+
+        for(let i = 0; i < filas.length; i++)
+        {
+            var fila = filas[i]
+            if(i !== 0)
+            {
+                let celdaTipo = fila.cells[6];
+
+                if(celdaTipo.innerHTML == "Ciudadano")
+                {
+                    for(let k = 0; k < fila.cells.length; k++)
+                    {
+                        let celda = fila.cells[k];
+                        if(!celda.hidden){
+
+                            celda.style.display = "none";
+                            fila.hidden = true;
+                        }
+                    }
+                }
+                else
+                {
+                    for(let k = 0; k < fila.cells.length; k++)
+                    {
+                        let celda = fila.cells[k];
+
+                        if(!celda.hidden)
+                        {
+                            celda.style.display = "table-cell";
+                            fila.hidden = false;
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+    
+    function ordenarTabla(encabezado, valor)
+    {
+        var tipo = encabezado.id;
+        var tabla = ElementoId("tabla");
+
+        //el slice lo usamos para que no tome el encabezado para comparar valores
+        var filas = Array.from(tabla.rows).slice(1);
+
+        //console.log(filas);
+        filas.sort((a,b) => {
+            let aTexto = a.cells[valor].innerText;
+            let bTexto = b.cells[valor].innerText;
+            switch (tipo) {
+                case 'numero':
+                    return parseFloat(aTexto) - parseFloat(bTexto);
+                case 'texto':
+                    return aTexto.localeCompare(bTexto);
+                case 'fecha':
+                    return parseInt(aTexto.toString().substring(0, 4)) - parseInt(bTexto.toString().substring(0, 4))
+                default:
+                    return 0;
+            }
+        });
+        
+        filas.forEach(fila => tabla.appendChild(fila));
+
+    }
+
+    function ocultarEextranjeros()
+    {
+        let tabla = ElementoId("tabla");
+
+        let filas = tabla.rows;
+
+        for(let i = 0; i < filas.length; i++)
+        {
+            var fila = filas[i]
+
+            //La primer fila es el encabezado
+            if(i !== 0)
+            {
+                let celdaTipo = fila.cells[6];
+
+                if(celdaTipo.innerHTML == "Extranjero")
+                {
+                    for(let k = 0; k < fila.cells.length; k++)
+                    {
+                        let celda = fila.cells[k];
+                        if(!celda.hidden)
+                        {
+                            celda.style.display = "none";
+                            fila.hidden = true;
+                        }
+                    }
+                }
+                else
+                {
+                    for(let k = 0; k < fila.cells.length; k++)
+                    {
+                        let celda = fila.cells[k];
+                        if(!celda.hidden){
+
+                            celda.style.display = "table-cell";
+                            fila.hidden = false;
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+    function mostrarAmbos()
+    {
+        let tabla = ElementoId("tabla");
+
+        let filas = tabla.rows;
+
+        for(let i = 0; i < filas.length; i++)
+        {
+            var fila = filas[i]
+            if(i !== 0)
+            {
+                for(let k = 0; k < fila.cells.length; k++)
+                {
+                    let celda = fila.cells[k];
+                    if(!celda.hidden)
+                    {
+                        celda.style.display = "table-cell";
+                        fila.hidden = false;
+                    }
+                }
+            }
+        }
+            }
+
+
+    function verificarSelect(select)
+    {
+
+        try
+        {
+            switch(select.value)
+            {
+                case "1":
+                    mostrarAmbos();
+                    break;
+                case "2":
+                    ocultarEextranjeros();
+                    break;
+                default:
+                    ocultarCiudadanos();
+                    break;
+
+            }
+        }catch(error)
+        {
+            alert("Primero tiene que agregar empleados o clientes para poder filtrar");
+        }
+
+        let inputPromedio = ElementoId("promedioInput");
+        inputPromedio.value = "";
+
+
+    }
+
+
+    function verificarCheckboxs(checkbox)
+    {
+
+        let filas = ElementoId("tabla").rows;
+
+        //Recorro las filas y el checkbox va a venir con el valor(value) de la celda que no se va a mostrar
+        for(let i = 0;  i < filas.length; i++)
+        {
+
+            var fila = filas[i];
+
+                if(!ElementoId(checkbox.id).checked)
+                {
+                    let celda = fila.cells[checkbox.value]; //valores de los inputs y las posiciones se relacionan
+                    
+                    celda.style.display = "none";
+                    celda.hidden = true;
+                }
+                else if(ElementoId(checkbox.id).checked)
+                {
+                    let celda = fila.cells[checkbox.value];
+                    celda.style.display = "table-cell";
+                    celda.hidden = false;
+                }
+            
+        }
+        
+
+    }
+
+
+    function personaId(id)
+    {
+        return personasTotal.find(persona => persona.id == id) || null;
+    }
+
+
+    function editarPersona(td)
+    {
+
+
+        var personaModificar = personasTotal.find(persona => persona.id == td.innerHTML);
+
+        ElementoId("id").value = personaModificar.id;
+        ElementoId("nombre").value = personaModificar.nombre;
+        ElementoId("apellido").value = personaModificar.apellido;
+        ElementoId("fechaDeNacimiento").value = personaModificar.fechaDeNacimiento;
+        ElementoId("inputDni").value = personaModificar.dni ?? "--";
+        ElementoId("inputPaisOrigen").value = personaModificar.paisOrigen ?? "--";
+
+        let tipoPersona;
+
+        if(personaModificar.constructor == Ciudadano)
+        {
+            document.getElementById("ciudadano").checked = true;
+            tipoPersona = "ciudadano";
+        }
+        else
+        {
+            document.getElementById("extranjero").checked = true;
+            tipoPersona = "extranjero";
+        }
+
+        ElementoQuery('div[class="form-personas"]').style.display = "none";
+
+        ElementoQuery('div[class="abm"]').style.display = "flex";
+
+        ElementoId("agregar-abm").style.display = "none";
+
+        ElementoId("editar-abm").style.display = "flex";
+
+
+        ElementoId("div-id").style.display = "flex";
+
+        Appear(tipoPersona.toLowerCase());
+
+        
+
+    }
+
+    function guardarDatosPersonaModificada(persona)
+    {
+
+        if(persona.constructor == Ciudadano && document.getElementById("extranjero").checked == true)
+        {
+            persona = new Extranjero(ElementoId("nombre").value, ElementoId("apellido").value, ElementoId("fechaDeNacimiento").value,
+            ElementoId("inputPaisOrigen").value)
+
+            persona.id = ElementoId("id").value;
+        }
+        else if(persona.constructor == Extranjero && document.getElementById("extranjero").checked == true)
+        {
+            persona = new Extranjero(ElementoId("nombre").value, ElementoId("apellido").value, ElementoId("fechaDeNacimiento").value,
+            ElementoId("inputDni").value)
+
+            persona.id = ElementoId("id").value;
+        }
+        else
+        {
+            persona.nombre = ElementoId("nombre").value;
+            persona.apellido = ElementoId("apellido").value;
+            persona.fechaDeNacimiento = ElementoId("fechaDeNacimiento").value;
+            persona.dni = ElementoId("inputDni").value ?? "--";
+            persona.paisOrigen = ElementoId("inputPaisOrigen").value ?? "--";
+        }
+
+        return persona;
+        
+    }
+
+    
+
+
+    function Editar()
+    {
+        ElementoId("animacion").style.display = "block";
+        var tabla = ElementoId("tabla");
+
+        // var inputs = ["id","nombre","apellido","fechaDeNacimiento","inputDni","inputPaisOrigen",];
+
+        var filas = tabla.rows;
+
+        if(!validarInputs())
+        {
+            return;
+        }
+        else
+        {
+            ElementoId("animacion").style.display = "block";
+            ElementoId("abm").style.display = "none";
+
+
+            let personaSinModificar = personaId(ElementoId("id").value);
+
+            var personaActualizada = guardarDatosPersonaModificada(personaSinModificar);
+
+            const response = fetch("https://examenesutn.vercel.app/api/PersonaCiudadanoExtranjero", {
+                    method: 'PUT', 
+                    mode: 'cors', 
+                    headers: {
+                    'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        id : personaActualizada.id,
+                        nombre : personaActualizada.nombre,
+                        apellido : personaActualizada.apellido,
+                        fechaDeNacimiento : personaActualizada.fechaDeNacimiento,
+                        dni : personaActualizada instanceof Ciudadano ? personaActualizada.dni : undefined,
+                        paisOrigen : personaActualizada instanceof Extranjero ? personaActualizada.paisOrigen : undefined
+                    })
+                })
+                .then(response=>{ 
+                    if (!response.ok) {
+                        ElementoQuery('div[class="abm"]').style.display = "none";
+                        ElementoQuery('div[class="form-personas"]').style.display = "flex";
+                        ElementoId("animacion").style.display = "none";
+                        throw new Error(`Error en la solicitud`);
+                    }
+                    return response;
+                }) 
+                .then(response=>{
+                    ElementoQuery('div[class="abm"]').style.display = "none";
+                    ElementoId("animacion").style.display = "none";
+                    ElementoId("form-personas").style.display = "flex";
+
+                    personasTotal = personasTotal.map(persona => persona.id == personaSinModificar.id ? personaActualizada : persona);
+
+                    var iconos = document.querySelectorAll('i');
+
+                    iconos.forEach(function(icono) {
+                        icono.remove();
+                    });
+
+                    for(let i = 0; i < filas.length; i++)
+                    {
+                        var fila = filas[i];
+                        if(i !== 0)
+                        {
+                            if(fila.cells[0].innerHTML == personaSinModificar.id )
+                            {
+                                fila.cells[0].innerHTML = personaActualizada.id;
+                                fila.cells[1].innerHTML = personaActualizada.nombre;
+                                fila.cells[2].innerHTML = personaActualizada.apellido;
+                                fila.cells[3].innerHTML = personaActualizada.fechaDeNacimiento;
+                                fila.cells[4].innerHTML = personaActualizada.dni ?? "--";
+                                fila.cells[5].innerHTML = personaActualizada.paisOrigen ?? "--";
+
+                                if(personaActualizada.constructor == Ciudadano)
+                                {
+                                    fila.cells[6].innerHTML = "Ciudadano";
+                                }
+                                else
+                                {
+                                    fila.cells[6].innerHTML = "Extranjero";
+                                }
+
+                                reset();
+                            }
+                        }
+                    }
+
+                    console.log(personasTotal);
+                    })
+                    .catch(error => {
+                        alert(error.message);
+                    })
+        }
+
+    }
+
+
+    function VerificarPersona()
+    {
+
+        let extranjeroRadio = ElementoId("extranjero");
+        let ciudadanoRadio = ElementoId("ciudadano");
+
+        //Eventos de mis radiobuttons
+        ciudadanoRadio.addEventListener("change",function(){
+            if(ciudadanoRadio.checked)
+            {
+                Appear("ciudadano");
+
+            }
+        });
+
+        extranjeroRadio.addEventListener("change",function(){
+            if(extranjeroRadio.checked)
+            {
+                Appear("extranjero");
+                
+            }
+        });
+    }
+
+    function Appear(tipo)
+    {
+        //Si selecciona otro checkboxs los valores se reseteano
+        if(tipo == "ciudadano")
+        {
+            ElementoId("labelDni").style.display = "inline";
+            ElementoId("labelDni").textContent = "Dni";
+            ElementoId("inputDni").style.display = "inline";
+
+            ElementoId("labelPaisOrigen").style.display = "none";
+            ElementoId("inputPaisOrigen").style.display = "none";
+
+            ElementoId("inputPaisOrigen").value = "";
+        }
+        else
+        {
+            ElementoId("labelPaisOrigen").style.display = "inline";
+            ElementoId("labelPaisOrigen").textContent = "Pais origen";
+            ElementoId("inputPaisOrigen").style.display = "inline";
+
+            ElementoId("labelDni").style.display = "none";
+            ElementoId("inputDni").style.display = "none";
+
+            ElementoId("inputDni").value = "";
+        }
+    }
+
+
+    function calcularEdadPromedio()
+    {
+        var opcion = ElementoId("opciones").value;
+
+        try
+        {
+            let edades = new Array();
+
+            personasTotal.forEach(personas => {
+
+                switch(opcion)
+                {
+                    case '2':
+                        if(personas instanceof Ciudadano)
+                        {
+                            edades.push(personas.fechaDeNacimiento);
+                        }
+                        break;
+                    case '3':
+                        if(personas instanceof Extranjero)
+                        {
+                            edades.push(personas.fechaDeNacimiento);
+                        }
+                        break;
+                    default:
+                        edades.push(personas.fechaDeNacimiento);
+                        break;
+                }
+            });
+
+            let años = edades.map(function(edad) {
+                return parseInt(edad.toString().substring(0, 4));
+            })
+
+            
+
+            let promedio = años.reduce((total, valor) => total + valor, 0) / años.length;
+
+            let inputPromedio = ElementoId("promedioInput");
+            inputPromedio.value = promedio 
+        }
+        catch(error)
+        {
+            alert("Primero tiene que agregar edades a la tabla");
+        }
+
+
+
+    }
+
+    function AgregarElemento(elemento,contenedor){
+        var cuerpo = document.getElementById('body');
+
+        contenedor.inser(elemento);
+    }
+
+    function ElementoId(id){return document.getElementById(id)}
+
+    function ElementoQuery(selector){ return document.querySelector(selector)}
+
+    function CrearElemento(elemento){return document.createElement(elemento)}
+
+    function CrearTexto(texto){return document.createTextNode(texto)}
+
+
+</script>
+</html>
